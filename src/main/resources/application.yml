@@ -1,0 +1,14 @@
+micronaut:
+  application:
+    name: pixGrpc
+datasources:
+  default:
+    url: jdbc:mysql://localhost:3306/db_pix?createDatabaseIfNotExist=true&serverTimezone=UTC
+    driverClassName: com.mysql.cj.jdbc.Driver
+    username: root
+    password: codando135
+    schema-generate: UPDATE
+    dialect: MYSQL
+jpa.default.properties.hibernate.hbm2ddl.auto: update
+jpa.default.properties.hibernate.show_sql: true
+jpa.default.properties.hibernate.format_sql: true
