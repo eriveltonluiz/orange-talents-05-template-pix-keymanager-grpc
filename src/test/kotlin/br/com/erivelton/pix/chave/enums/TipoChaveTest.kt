@@ -1,4 +1,4 @@
-package br.com.erivelton.pix.chave
+package br.com.erivelton.pix.chave.enums
 
 import br.com.erivelton.pix.chave.enums.TipoChave
 import org.junit.jupiter.api.Assertions.*
@@ -72,7 +72,7 @@ internal class TipoChaveTest{
     inner class CELULAR{
 
         @Test
-        internal fun `deve invalidar quando não for inserido o valor da chave de CELULAR`() {
+        internal fun `deve invalidar quando nao for inserido o valor da chave de CELULAR`() {
             with(TipoChave.CELULAR) {
                 assertFalse(validaChave(""))
                 assertFalse(validaChave(null))
@@ -80,14 +80,14 @@ internal class TipoChaveTest{
         }
 
         @Test
-        internal fun `deve invalidar quando o número da chave CELULAR não for condizente`() {
+        internal fun `deve invalidar quando o numero da chave CELULAR não for condizente`() {
             with(TipoChave.CELULAR) {
                 assertFalse(validaChave("00009999"))
             }
         }
 
         @Test
-        internal fun `deve validar quando o número da chave CELULAR for condizente`() {
+        internal fun `deve validar quando o numero da chave CELULAR for condizente`() {
             with(TipoChave.CELULAR) {
                 assertTrue(validaChave("+55988710913"))
             }
@@ -102,7 +102,7 @@ internal class TipoChaveTest{
 
     }
 
-    inner class ALEATORIA{
+    inner class CHAVE_ALEATORIA{
 
         @Test
         internal fun `deve invalidar quando o valor da chave ter sido inserido`() {

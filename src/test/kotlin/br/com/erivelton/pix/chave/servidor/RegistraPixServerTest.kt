@@ -1,4 +1,4 @@
-package br.com.erivelton.pix.chave
+package br.com.erivelton.pix.chave.servidor
 
 import br.com.erivelton.pix.PixGrpcServiceGrpc
 import br.com.erivelton.pix.PixRequest
@@ -86,7 +86,7 @@ internal class RegistraPixServerTest(
     }
 
     @Test
-    internal fun `não deve registrar nova chave pix caso os dados do cliente itau estejam incorretos`() {
+    internal fun `nao deve registrar nova chave pix caso os dados do cliente itau estejam incorretos`() {
         val clienteIdErrado = UUID.randomUUID().toString()
         Mockito.`when`(
             itauClient.consultaCliente(
@@ -113,7 +113,7 @@ internal class RegistraPixServerTest(
     }
 
     @Test
-    internal fun `não deve registrar nova chave pix caso a mesma já esteja cadastrada`() {
+    internal fun `nao deve registrar nova chave pix caso a mesma ja esteja cadastrada`() {
         repositorio.save(
             Chave(
                 clienteIdPadrao,
@@ -148,7 +148,7 @@ internal class RegistraPixServerTest(
     }
 
     @Test
-    internal fun `nao deve registrar chave pix se houver parâmetros inválidos`() {
+    internal fun `nao deve registrar chave pix se houver parametros invalidos`() {
         val throwGerado = assertThrows<StatusRuntimeException> {
             grpcClient.registrarPix(PixRequest.newBuilder().build())
         }
