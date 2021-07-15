@@ -2,6 +2,10 @@ package br.com.erivelton.pix.chave.entidade
 
 import br.com.erivelton.pix.chave.enums.TipoChave
 import br.com.erivelton.pix.chave.enums.TipoConta
+import br.com.erivelton.pix.shared.apiexterna.dto.enums.TypePerson
+import br.com.erivelton.pix.shared.apiexterna.dto.resposta.ChavePixCriadaResposta
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 import javax.persistence.*
 
@@ -29,7 +33,17 @@ class Chave(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null
 
+    var criadoEm: LocalDateTime? = null
+
+    @Enumerated(EnumType.STRING)
+    var tipoCliente: TypePerson? = null
+
     fun idClienteItau(): String? {
         return clienteId.toString()
+    }
+
+    fun atualizaComDadosDoBancoCentral(chavePixCriadaResposta: ChavePixCriadaResposta){
+        criadoEm = LocalDateTime.parse(chavePixCriadaResposta.createdAt)
+        tipoCliente = chavePixCriadaResposta.tipoCliente()
     }
 }

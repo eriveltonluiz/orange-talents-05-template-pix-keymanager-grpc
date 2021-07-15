@@ -3,12 +3,15 @@ micronaut:
     name: pixGrpc
 datasources:
   default:
-    url: jdbc:mysql://localhost:3306/db_pix?createDatabaseIfNotExist=true&serverTimezone=UTC
+    url: ${DB_URL:`jdbc:mysql://localhost:3306/db_pix?createDatabaseIfNotExist=true&serverTimezone=UTC`}
     driverClassName: com.mysql.cj.jdbc.Driver
-    username: root
-    password: codando135
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:codando135}
     schema-generate: UPDATE
     dialect: MYSQL
 jpa.default.properties.hibernate.hbm2ddl.auto: update
 jpa.default.properties.hibernate.show_sql: true
 jpa.default.properties.hibernate.format_sql: true
+
+api.itau: ${ENDPOINT_GERAL_ITAU:`http://localhost:9091/api/v1`}
+api.bcb: ${ENDPOINT_GERAL_BCB:`http://localhost:8082/api/v1/pix/keys`}

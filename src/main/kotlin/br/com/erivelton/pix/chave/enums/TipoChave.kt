@@ -20,7 +20,7 @@ enum class TipoChave {
             return false
         }
     },
-    CELULAR{
+    PHONE{
         override fun validaChave(valor: String?): Boolean {
             if(valor.isNullOrBlank()) {
                 return false

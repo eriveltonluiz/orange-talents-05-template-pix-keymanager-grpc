@@ -4,9 +4,8 @@ import br.com.erivelton.pix.PixRequest
 import br.com.erivelton.pix.chave.dto.requisicao.NovoPix
 import br.com.erivelton.pix.chave.enums.TipoChave
 import br.com.erivelton.pix.chave.enums.TipoConta
-import java.util.*
 
-fun PixRequest.toModel(contaCliente: DadosClienteResponse): NovoPix {
+fun PixRequest.toModel(contaCliente: DadosClienteResposta): NovoPix {
     return NovoPix(
         clienteId,
         valorChave,

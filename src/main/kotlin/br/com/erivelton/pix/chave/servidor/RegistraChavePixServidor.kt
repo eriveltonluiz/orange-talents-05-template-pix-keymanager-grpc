@@ -4,8 +4,10 @@ import br.com.erivelton.pix.PixGrpcServiceGrpc
 import br.com.erivelton.pix.PixRequest
 import br.com.erivelton.pix.PixResponse
 import br.com.erivelton.pix.shared.apiexterna.ApiExternaContasItau
-import br.com.erivelton.pix.shared.apiexterna.dto.resposta.DadosClienteResponse
+import br.com.erivelton.pix.shared.apiexterna.dto.resposta.DadosClienteResposta
 import br.com.erivelton.pix.chave.servico.RegistraPixService
+import br.com.erivelton.pix.shared.apiexterna.ApiExternaBCB
+import br.com.erivelton.pix.shared.apiexterna.dto.resposta.ChavePixCriadaResposta
 import br.com.erivelton.pix.shared.apiexterna.dto.resposta.toModel
 import br.com.erivelton.pix.shared.excecao.ErroDeProcessamentoApiExternaException
 import br.com.erivelton.pix.shared.handlers.ErrorAroundHandler
@@ -23,7 +25,7 @@ class RegistraChavePixServidor(
 ) : PixGrpcServiceGrpc.PixGrpcServiceImplBase() {
 
     override fun registrarPix(request: PixRequest?, responseObserver: StreamObserver<PixResponse>?) {
-        var consultaCliente: HttpResponse<DadosClienteResponse>? = null
+        var consultaCliente: HttpResponse<DadosClienteResposta>? = null
 
         try {
             consultaCliente = apiExternaContasItau.consultaCliente(request!!.clienteId, request!!.tipoConta.name)
@@ -32,6 +34,7 @@ class RegistraChavePixServidor(
         }
 
         val novoPix = request.toModel(consultaCliente.body())
+
         val chave = registraPixService.salvarPix(novoPix)
 
         val resposta = PixResponse.newBuilder()

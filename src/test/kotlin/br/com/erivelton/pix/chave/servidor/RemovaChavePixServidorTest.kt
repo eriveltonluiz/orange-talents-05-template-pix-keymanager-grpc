@@ -41,7 +41,7 @@ internal class RemovaChavePixServidorTest(
             Chave(
                 clienteIdPadrao,
                 "+823713681230",
-                TipoChave.CELULAR,
+                TipoChave.PHONE,
                 TipoConta.CONTA_CORRENTE,
                 Conta("ITAÚ UNIBANCO S.A.", "60701190", "0001", "123455", "Yuri Matheus", "86135457004")
             )

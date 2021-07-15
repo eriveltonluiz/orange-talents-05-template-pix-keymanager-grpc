@@ -73,7 +73,7 @@ internal class TipoChaveTest{
 
         @Test
         internal fun `deve invalidar quando nao for inserido o valor da chave de CELULAR`() {
-            with(TipoChave.CELULAR) {
+            with(TipoChave.PHONE) {
                 assertFalse(validaChave(""))
                 assertFalse(validaChave(null))
             }
@@ -81,21 +81,21 @@ internal class TipoChaveTest{
 
         @Test
         internal fun `deve invalidar quando o numero da chave CELULAR não for condizente`() {
-            with(TipoChave.CELULAR) {
+            with(TipoChave.PHONE) {
                 assertFalse(validaChave("00009999"))
             }
         }
 
         @Test
         internal fun `deve validar quando o numero da chave CELULAR for condizente`() {
-            with(TipoChave.CELULAR) {
+            with(TipoChave.PHONE) {
                 assertTrue(validaChave("+55988710913"))
             }
         }
 
         @Test
         internal fun `deve invalidar quando houver embutido no valor da chave CELULAR letra(s)`() {
-            with(TipoChave.CELULAR) {
+            with(TipoChave.PHONE) {
                 assertFalse(validaChave("+5598871091a"))
             }
         }

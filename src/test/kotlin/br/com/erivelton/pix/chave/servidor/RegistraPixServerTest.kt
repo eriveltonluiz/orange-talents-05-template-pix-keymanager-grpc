@@ -8,9 +8,9 @@ import br.com.erivelton.pix.chave.entidade.Conta
 import br.com.erivelton.pix.chave.enums.TipoConta
 import br.com.erivelton.pix.chave.repositorio.ChaveRepositorio
 import br.com.erivelton.pix.shared.apiexterna.ApiExternaContasItau
-import br.com.erivelton.pix.shared.apiexterna.dto.resposta.DadosClienteResponse
-import br.com.erivelton.pix.shared.apiexterna.dto.resposta.InstituicaoResponse
-import br.com.erivelton.pix.shared.apiexterna.dto.resposta.TitularResponse
+import br.com.erivelton.pix.shared.apiexterna.dto.resposta.DadosClienteResposta
+import br.com.erivelton.pix.shared.apiexterna.dto.resposta.InstituicaoResposta
+import br.com.erivelton.pix.shared.apiexterna.dto.resposta.TitularResposta
 import io.grpc.ManagedChannel
 import io.grpc.Status
 import io.grpc.StatusRuntimeException
@@ -39,19 +39,19 @@ internal class RegistraPixServerTest(
     @Inject
     lateinit var itauClient: ApiExternaContasItau
 
-    lateinit var dadosClienteItau: DadosClienteResponse
+    lateinit var dadosClienteItau: DadosClienteResposta
 
     lateinit var clienteIdPadrao: String
 
     @BeforeEach
     fun setup() {
         repositorio.deleteAll()
-        dadosClienteItau = DadosClienteResponse(
+        dadosClienteItau = DadosClienteResposta(
             tipo = TipoConta.CONTA_CORRENTE.name,
-            instituicao = InstituicaoResponse(nome = "ITAÚ UNIBANCO S.A.", ispb = "60701190"),
+            instituicao = InstituicaoResposta(nome = "ITAÚ UNIBANCO S.A.", ispb = "60701190"),
             agencia = "0001",
             numero = "123455",
-            titular = TitularResponse(
+            titular = TitularResposta(
                 id = "5260263c-a3c1-4727-ae32-3bdb2538841b",
                 nome = "Yuri Matheus",
                 cpf = "86135457004"
@@ -118,7 +118,7 @@ internal class RegistraPixServerTest(
             Chave(
                 clienteIdPadrao,
                 "+823713681230",
-                br.com.erivelton.pix.chave.enums.TipoChave.CELULAR,
+                br.com.erivelton.pix.chave.enums.TipoChave.PHONE,
                 TipoConta.CONTA_CORRENTE,
                 Conta("ITAÚ UNIBANCO S.A.", "60701190", "0001", "123455", "Yuri Matheus", "86135457004")
             )

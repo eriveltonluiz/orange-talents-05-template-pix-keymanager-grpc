@@ -1,4 +1,4 @@
 package br.com.erivelton.pix.shared.apiexterna.dto.resposta
 
-class InstituicaoResponse (val nome: String,
+class InstituicaoResposta (val nome: String,
                            val ispb: String){}

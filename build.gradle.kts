@@ -58,6 +58,8 @@ dependencies {
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.7.0")
     testImplementation("com.h2database:h2")
 
+    implementation("io.micronaut.xml:micronaut-jackson-xml")
+    runtimeOnly("com.fasterxml.jackson.module:jackson-module-kotlin")
 }
 
 
