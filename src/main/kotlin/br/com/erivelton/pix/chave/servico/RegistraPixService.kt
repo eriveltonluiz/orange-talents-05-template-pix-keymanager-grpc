@@ -1,6 +1,9 @@
-package br.com.erivelton.pix.chave
+package br.com.erivelton.pix.chave.servico
 
-import br.com.erivelton.pix.erro.ChavePixDuplicadaException
+import br.com.erivelton.pix.chave.repositorio.ChaveRepositorio
+import br.com.erivelton.pix.chave.entidade.Chave
+import br.com.erivelton.pix.chave.dto.requisicao.NovoPix
+import br.com.erivelton.pix.shared.excecao.ChavePixDuplicadaException
 import io.micronaut.validation.Validated
 import javax.inject.Singleton
 import javax.validation.Valid

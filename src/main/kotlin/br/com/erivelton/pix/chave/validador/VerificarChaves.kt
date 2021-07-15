@@ -1,5 +1,6 @@
-package br.com.erivelton.pix.chave
+package br.com.erivelton.pix.chave.validador
 
+import br.com.erivelton.pix.chave.validador.ChavePixValidador
 import javax.validation.Constraint
 import javax.validation.Payload
 import kotlin.reflect.KClass

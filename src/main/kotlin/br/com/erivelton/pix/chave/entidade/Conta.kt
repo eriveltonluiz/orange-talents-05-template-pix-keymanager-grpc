@@ -1,4 +1,4 @@
-package br.com.erivelton.pix.chave
+package br.com.erivelton.pix.chave.entidade
 
 import javax.persistence.Column
 import javax.persistence.Embeddable

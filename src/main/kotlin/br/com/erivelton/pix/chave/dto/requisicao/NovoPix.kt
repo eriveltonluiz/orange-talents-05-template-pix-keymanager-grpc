@@ -1,5 +1,10 @@
-package br.com.erivelton.pix.chave
+package br.com.erivelton.pix.chave.dto.requisicao
 
+import br.com.erivelton.pix.shared.apiexterna.dto.resposta.DadosClienteResponse
+import br.com.erivelton.pix.chave.entidade.Chave
+import br.com.erivelton.pix.chave.enums.TipoChave
+import br.com.erivelton.pix.chave.enums.TipoConta
+import br.com.erivelton.pix.chave.validador.VerificarChaves
 import io.micronaut.core.annotation.Introspected
 import java.util.*
 import javax.validation.Valid
@@ -23,7 +28,7 @@ data class NovoPix(
     fun paraEntidadeChave(): Chave {
         return Chave(
             clienteId = clienteId,
-            valor = valorChave,
+            valor = if(tipoChave == TipoChave.CHAVE_ALEATORIA) UUID.randomUUID().toString() else valorChave,
             tipoChave = tipoChave,
             tipoConta = tipoConta,
             conta = conta.paraConta()

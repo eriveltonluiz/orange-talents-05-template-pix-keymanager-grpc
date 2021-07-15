@@ -1,5 +1,6 @@
-package br.com.erivelton.pix.chave
+package br.com.erivelton.pix.shared.apiexterna
 
+import br.com.erivelton.pix.shared.apiexterna.dto.resposta.DadosClienteResponse
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.annotation.Get
 import io.micronaut.http.annotation.PathVariable

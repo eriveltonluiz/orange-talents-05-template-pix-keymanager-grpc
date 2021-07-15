@@ -34,4 +34,5 @@ message PixRequest {
 
 message PixResponse {
   int64 PixID = 1;
+  string clienteId = 2;
 }

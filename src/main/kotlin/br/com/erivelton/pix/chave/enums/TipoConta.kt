@@ -1,4 +1,4 @@
-package br.com.erivelton.pix.chave
+package br.com.erivelton.pix.chave.enums
 
 enum class TipoConta {
     CONTA_DESCONHECIDA,

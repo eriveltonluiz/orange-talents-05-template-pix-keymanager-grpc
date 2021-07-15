@@ -1,5 +1,7 @@
-package br.com.erivelton.pix.chave
+package br.com.erivelton.pix.chave.entidade
 
+import br.com.erivelton.pix.chave.enums.TipoChave
+import br.com.erivelton.pix.chave.enums.TipoConta
 import java.util.*
 import javax.persistence.*
 
@@ -20,7 +22,12 @@ class Chave(
     @Embedded val conta: Conta,
 )
 {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null
+
+    fun idClienteItau(): String? {
+        return clienteId.toString()
+    }
 }

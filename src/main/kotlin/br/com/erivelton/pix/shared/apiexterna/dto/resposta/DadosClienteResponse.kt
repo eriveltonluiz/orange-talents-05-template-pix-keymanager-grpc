@@ -1,5 +1,6 @@
-package br.com.erivelton.pix.chave
+package br.com.erivelton.pix.shared.apiexterna.dto.resposta
 
+import br.com.erivelton.pix.chave.entidade.Conta
 import javax.validation.constraints.NotBlank
 
 data class DadosClienteResponse(

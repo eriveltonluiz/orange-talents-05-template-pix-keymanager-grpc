@@ -1,5 +1,6 @@
-package br.com.erivelton.pix.chave
+package br.com.erivelton.pix.chave.validador
 
+import br.com.erivelton.pix.chave.dto.requisicao.NovoPix
 import io.micronaut.core.annotation.AnnotationValue
 import io.micronaut.validation.validator.constraints.ConstraintValidator
 import io.micronaut.validation.validator.constraints.ConstraintValidatorContext
