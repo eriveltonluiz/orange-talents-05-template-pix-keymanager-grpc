@@ -1,6 +1,7 @@
 package br.com.erivelton.pix.shared.handlers
 
 import br.com.erivelton.pix.shared.excecao.ChavePixDuplicadaException
+import br.com.erivelton.pix.shared.excecao.ChavePixNaoEncontradaException
 import br.com.erivelton.pix.shared.excecao.ErroDeProcessamentoApiExternaException
 import io.grpc.Status
 import io.grpc.stub.StreamObserver
@@ -27,6 +28,10 @@ class ErrorAroundHandlerInterceptor : MethodInterceptor<Any, Any> {
             val status = when (ex) {
 
                 is ChavePixDuplicadaException -> Status.ALREADY_EXISTS
+                    .withCause(ex)
+                    .withDescription(ex.message)
+
+                is ChavePixNaoEncontradaException -> Status.NOT_FOUND
                     .withCause(ex)
                     .withDescription(ex.message)
 

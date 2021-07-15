@@ -1,6 +1,6 @@
 package br.com.erivelton.pix.chave.enums
 
-import io.micronaut.validation.validator.constraints.EmailValidator
+import org.hibernate.validator.internal.constraintvalidators.hv.EmailValidator
 
 enum class TipoChave {
     CHAVE_DESCONHECIDA{

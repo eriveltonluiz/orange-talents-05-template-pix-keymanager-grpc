@@ -8,7 +8,7 @@ import java.util.*
 
 fun PixRequest.toModel(contaCliente: DadosClienteResponse): NovoPix {
     return NovoPix(
-        UUID.fromString(clienteId),
+        clienteId,
         valorChave,
         TipoChave.valueOf(tipoChave.name),
         TipoConta.valueOf(tipoConta.name),

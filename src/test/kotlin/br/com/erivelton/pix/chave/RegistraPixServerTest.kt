@@ -116,7 +116,7 @@ internal class RegistraPixServerTest(
     internal fun `não deve registrar nova chave pix caso a mesma já esteja cadastrada`() {
         repositorio.save(
             Chave(
-                UUID.fromString(clienteIdPadrao),
+                clienteIdPadrao,
                 "+823713681230",
                 br.com.erivelton.pix.chave.enums.TipoChave.CELULAR,
                 TipoConta.CONTA_CORRENTE,

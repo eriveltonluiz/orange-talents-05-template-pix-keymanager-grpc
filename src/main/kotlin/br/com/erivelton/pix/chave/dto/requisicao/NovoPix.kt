@@ -14,7 +14,7 @@ import javax.validation.constraints.Size
 @VerificarChaves
 @Introspected
 data class NovoPix(
-    @field:NotBlank val clienteId: UUID,
+    @field:NotBlank val clienteId: String,
     @field:NotBlank @field:Size(max = 77) val valorChave: String,
     @field:NotBlank val tipoChave: TipoChave,
     @field:NotBlank val tipoConta: TipoConta,

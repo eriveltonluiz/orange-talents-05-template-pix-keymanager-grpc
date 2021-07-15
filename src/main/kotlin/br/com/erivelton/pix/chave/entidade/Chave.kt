@@ -9,13 +9,15 @@ import javax.persistence.*
 class Chave(
 
     @Column(name = "cliente_id")
-    val clienteId: UUID,
+    val clienteId: String,
 
     val valor: String,
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "tipo_chave")
     val tipoChave: TipoChave,
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "tipo_conta")
     val tipoConta: TipoConta,
 
