@@ -1,27 +1,24 @@
 package br.com.erivelton.pix.chave.servidor
 
-import br.com.erivelton.pix.PixGrpcServiceGrpc
-import br.com.erivelton.pix.PixRequest
-import br.com.erivelton.pix.PixResponse
+import br.com.erivelton.pix.addchave.PixGrpcServiceGrpc
+import br.com.erivelton.pix.addchave.PixRequest
+import br.com.erivelton.pix.addchave.PixResponse
 import br.com.erivelton.pix.shared.apiexterna.ApiExternaContasItau
 import br.com.erivelton.pix.shared.apiexterna.dto.resposta.DadosClienteResposta
 import br.com.erivelton.pix.chave.servico.RegistraPixService
-import br.com.erivelton.pix.shared.apiexterna.ApiExternaBCB
-import br.com.erivelton.pix.shared.apiexterna.dto.resposta.ChavePixCriadaResposta
 import br.com.erivelton.pix.shared.apiexterna.dto.resposta.toModel
 import br.com.erivelton.pix.shared.excecao.ErroDeProcessamentoApiExternaException
 import br.com.erivelton.pix.shared.handlers.ErrorAroundHandler
 import io.grpc.stub.StreamObserver
 import io.micronaut.http.HttpResponse
-import io.micronaut.http.client.exceptions.HttpClientResponseException
-import javax.inject.Inject
+import java.lang.Exception
 import javax.inject.Singleton
 
 @Singleton
 @ErrorAroundHandler
 class RegistraChavePixServidor(
-    @Inject private val apiExternaContasItau: ApiExternaContasItau,
-    @Inject private val registraPixService: RegistraPixService
+    val apiExternaContasItau: ApiExternaContasItau,
+    val registraPixService: RegistraPixService
 ) : PixGrpcServiceGrpc.PixGrpcServiceImplBase() {
 
     override fun registrarPix(request: PixRequest?, responseObserver: StreamObserver<PixResponse>?) {
@@ -29,7 +26,7 @@ class RegistraChavePixServidor(
 
         try {
             consultaCliente = apiExternaContasItau.consultaCliente(request!!.clienteId, request!!.tipoConta.name)
-        } catch (ex: HttpClientResponseException) {
+        } catch (ex: Exception) {
             throw ErroDeProcessamentoApiExternaException("Erro ao trazer os dados cliente do itaú!!")
         }
 

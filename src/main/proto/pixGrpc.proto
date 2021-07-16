@@ -1,7 +1,7 @@
 syntax = "proto3";
 
 option java_multiple_files = true;
-option java_package = "br.com.erivelton.pix";
+option java_package = "br.com.erivelton.pix.addchave";
 option java_outer_classname = "PixGrpc";
 option objc_class_prefix = "HLW";
 
@@ -14,7 +14,7 @@ service PixGrpcService {
 enum TipoChave{
   CHAVE_DESCONHECIDA = 0;
   CPF = 1;
-  CELULAR = 2;
+  PHONE = 2;
   EMAIL = 3;
   CHAVE_ALEATORIA = 4;
 }

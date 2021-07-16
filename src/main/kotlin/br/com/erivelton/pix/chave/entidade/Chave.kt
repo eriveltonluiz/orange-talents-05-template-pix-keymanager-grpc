@@ -43,7 +43,12 @@ class Chave(
     }
 
     fun atualizaComDadosDoBancoCentral(chavePixCriadaResposta: ChavePixCriadaResposta){
-        criadoEm = LocalDateTime.parse(chavePixCriadaResposta.createdAt)
+//        criadoEm = LocalDateTime.parse(chavePixCriadaResposta.createdAt)
+        criadoEm = chavePixCriadaResposta.createdAt
         tipoCliente = chavePixCriadaResposta.tipoCliente()
+    }
+
+    fun ispbItau(): String{
+        return conta.ispb
     }
 }

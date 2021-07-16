@@ -1,16 +1,20 @@
 package br.com.erivelton.pix.chave.servidor
 
-import br.com.erivelton.pix.PixGrpcServiceGrpc
-import br.com.erivelton.pix.PixRequest
-import br.com.erivelton.pix.TipoChave
+import br.com.erivelton.pix.addchave.PixGrpcServiceGrpc
+import br.com.erivelton.pix.addchave.PixRequest
+import br.com.erivelton.pix.addchave.TipoChave
 import br.com.erivelton.pix.chave.entidade.Chave
 import br.com.erivelton.pix.chave.entidade.Conta
 import br.com.erivelton.pix.chave.enums.TipoConta
 import br.com.erivelton.pix.chave.repositorio.ChaveRepositorio
+import br.com.erivelton.pix.shared.apiexterna.ApiExternaBCB
 import br.com.erivelton.pix.shared.apiexterna.ApiExternaContasItau
-import br.com.erivelton.pix.shared.apiexterna.dto.resposta.DadosClienteResposta
-import br.com.erivelton.pix.shared.apiexterna.dto.resposta.InstituicaoResposta
-import br.com.erivelton.pix.shared.apiexterna.dto.resposta.TitularResposta
+import br.com.erivelton.pix.shared.apiexterna.dto.enums.AccountType
+import br.com.erivelton.pix.shared.apiexterna.dto.enums.TypePerson
+import br.com.erivelton.pix.shared.apiexterna.dto.requisicao.ClienteRequisicao
+import br.com.erivelton.pix.shared.apiexterna.dto.requisicao.ContaBancariaRequisicao
+import br.com.erivelton.pix.shared.apiexterna.dto.requisicao.DadosChavePixRequisicao
+import br.com.erivelton.pix.shared.apiexterna.dto.resposta.*
 import io.grpc.ManagedChannel
 import io.grpc.Status
 import io.grpc.StatusRuntimeException
@@ -26,6 +30,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.mockito.Mockito
+import java.time.LocalDateTime
 import java.util.*
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -39,7 +44,14 @@ internal class RegistraPixServerTest(
     @Inject
     lateinit var itauClient: ApiExternaContasItau
 
+    @Inject
+    lateinit var apiExternaBCB: ApiExternaBCB
+
     lateinit var dadosClienteItau: DadosClienteResposta
+
+    lateinit var dadosChavePixRequisicao: DadosChavePixRequisicao
+
+    lateinit var dadosChavePixResposta: ChavePixCriadaResposta
 
     lateinit var clienteIdPadrao: String
 
@@ -57,11 +69,27 @@ internal class RegistraPixServerTest(
                 cpf = "86135457004"
             )
         )
+
+        dadosChavePixRequisicao = DadosChavePixRequisicao(
+            key = "+823713681230",
+            keyType = br.com.erivelton.pix.chave.enums.TipoChave.PHONE,
+            bankAccount = ContaBancariaRequisicao("60701190", "0001", "123455", AccountType.CACC),
+            owner = ClienteRequisicao(TypePerson.NATURAL_PERSON, "Yuri Matheus", "86135457004")
+        )
+
+        dadosChavePixResposta = ChavePixCriadaResposta(
+            key = "+823713681230",
+            keyType = br.com.erivelton.pix.chave.enums.TipoChave.PHONE,
+            bankAccount = ContaBancariaResposta("60701190", "0001", "123455", AccountType.CACC),
+            owner = ClienteResposta(TypePerson.NATURAL_PERSON, "Yuri Matheus", "86135457004"),
+            createdAt = LocalDateTime.now()
+        )
+
         clienteIdPadrao = "5260263c-a3c1-4727-ae32-3bdb2538841b"
     }
 
     @Test
-    internal fun `deve registrar nova chave pix`() {
+    internal fun `deve registrar nova chave pix no sistema local e no banco central`() {
         Mockito.`when`(
             itauClient.consultaCliente(
                 clienteId = clienteIdPadrao,
@@ -69,12 +97,15 @@ internal class RegistraPixServerTest(
             )
         ).thenReturn(HttpResponse.ok(dadosClienteItau))
 
+        Mockito.`when`(apiExternaBCB.registraPix(dadosChavePixRequisicao))
+            .thenReturn(HttpResponse.created(dadosChavePixResposta))
+
         val resposta = grpcClient.registrarPix(
             PixRequest.newBuilder()
                 .setClienteId("5260263c-a3c1-4727-ae32-3bdb2538841b")
                 .setValorChave("+823713681230")
-                .setTipoChave(TipoChave.CELULAR)
-                .setTipoConta(br.com.erivelton.pix.TipoConta.CONTA_CORRENTE)
+                .setTipoChave(TipoChave.PHONE)
+                .setTipoConta(br.com.erivelton.pix.addchave.TipoConta.CONTA_CORRENTE)
                 .build()
         )
 
@@ -93,18 +124,20 @@ internal class RegistraPixServerTest(
                 clienteId = clienteIdErrado,
                 tipo = TipoConta.CONTA_CORRENTE.name
             )
-        ).thenReturn(HttpResponse.notFound())
+        ).thenReturn(HttpResponse.serverError())
 
         val throwGerado = assertThrows<StatusRuntimeException> {
             grpcClient.registrarPix(
                 PixRequest.newBuilder()
                     .setClienteId(clienteIdErrado)
                     .setValorChave("+823713681230")
-                    .setTipoChave(TipoChave.CELULAR)
-                    .setTipoConta(br.com.erivelton.pix.TipoConta.CONTA_CORRENTE)
+                    .setTipoChave(TipoChave.PHONE)
+                    .setTipoConta(br.com.erivelton.pix.addchave.TipoConta.CONTA_CORRENTE)
                     .build()
             )
         }
+
+        throwGerado.printStackTrace()
 
         with(throwGerado) {
             assertEquals(Status.FAILED_PRECONDITION.code, status.code)
@@ -132,13 +165,11 @@ internal class RegistraPixServerTest(
                 PixRequest.newBuilder()
                     .setClienteId(clienteIdPadrao)
                     .setValorChave("+823713681230")
-                    .setTipoChave(TipoChave.CELULAR)
-                    .setTipoConta(br.com.erivelton.pix.TipoConta.CONTA_CORRENTE)
+                    .setTipoChave(TipoChave.PHONE)
+                    .setTipoConta(br.com.erivelton.pix.addchave.TipoConta.CONTA_CORRENTE)
                     .build()
             )
         }
-
-        throwGerado.printStackTrace()
 
         with(throwGerado) {
             assertEquals(Status.ALREADY_EXISTS.code, status.code)
@@ -167,6 +198,11 @@ internal class RegistraPixServerTest(
     @MockBean(ApiExternaContasItau::class)
     fun itauClient(): ApiExternaContasItau {
         return Mockito.mock(ApiExternaContasItau::class.java)
+    }
+
+    @MockBean(ApiExternaBCB::class)
+    fun bcbClient(): ApiExternaBCB{
+        return Mockito.mock(ApiExternaBCB::class.java)
     }
 
     @Factory

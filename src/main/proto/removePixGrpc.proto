@@ -1,7 +1,7 @@
 syntax = "proto3";
 
 option java_multiple_files = true;
-option java_package = "br.com.erivelton.pix";
+option java_package = "br.com.erivelton.pix.removechave";
 option java_outer_classname = "RemovePixGrpc";
 option objc_class_prefix = "HLW";
 

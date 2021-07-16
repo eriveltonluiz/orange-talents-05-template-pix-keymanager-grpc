@@ -17,7 +17,7 @@ import javax.validation.Valid
 @Transactional
 class RegistraPixService(
     val chaveRepositorio: ChaveRepositorio,
-    @Inject private val apiExternaBCB: ApiExternaBCB
+    val apiExternaBCB: ApiExternaBCB
 ) {
     fun salvarPix(@Valid novoPix: NovoPix): Chave {
         if(chaveRepositorio.existsByValor(novoPix.valorChave)){
@@ -27,6 +27,7 @@ class RegistraPixService(
         val chaveSalva = chaveRepositorio.save(chave)
 
         val dadosChavePixRequisicao = novoPix.paraBancoCentral()
+
         val respostaBCB = apiExternaBCB.registraPix(dadosChavePixRequisicao)
 
         if(respostaBCB.status != HttpStatus.CREATED){

@@ -16,8 +16,8 @@ import javax.validation.Valid
 @Validated
 @Singleton
 class RemovaPixServico(
-    @Inject val repositorio: ChaveRepositorio,
-    @Inject val apiExternaBCB: ApiExternaBCB
+    val repositorio: ChaveRepositorio,
+    val apiExternaBCB: ApiExternaBCB
 ) {
 
     fun remova(@Valid request: ChaveASerRemovidaRequisicao) {
@@ -27,7 +27,7 @@ class RemovaPixServico(
 
         repositorio.delete(chaveASerRemovida)
 
-        val chavePixDeletada = DeletaChavePixRequisicao(chaveASerRemovida)
+        val chavePixDeletada = DeletaChavePixRequisicao(chaveASerRemovida.valor, chaveASerRemovida.ispbItau())
 
         val respostaBCB = apiExternaBCB.removePix(chavePixDeletada, chavePixDeletada.key)
 

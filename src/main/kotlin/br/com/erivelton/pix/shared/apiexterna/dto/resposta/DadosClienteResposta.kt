@@ -6,8 +6,10 @@ import br.com.erivelton.pix.shared.apiexterna.dto.enums.AccountType
 import br.com.erivelton.pix.shared.apiexterna.dto.enums.TypePerson
 import br.com.erivelton.pix.shared.apiexterna.dto.requisicao.ClienteRequisicao
 import br.com.erivelton.pix.shared.apiexterna.dto.requisicao.ContaBancariaRequisicao
+import io.micronaut.core.annotation.Introspected
 import javax.validation.constraints.NotBlank
 
+@Introspected
 data class DadosClienteResposta(
     @field:NotBlank val tipo: String,
     @field:NotBlank val instituicao: InstituicaoResposta,
