@@ -44,7 +44,7 @@ enum class TipoChave {
             }
         }
     },
-    CHAVE_ALEATORIA{
+    RANDOM{
         override fun validaChave(valor: String?): Boolean {
             return valor.isNullOrBlank()
         }

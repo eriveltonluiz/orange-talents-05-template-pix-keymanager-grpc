@@ -17,7 +17,7 @@ import javax.validation.constraints.Size
 @Introspected
 data class NovoPix(
     @field:NotBlank val clienteId: String,
-    @field:NotBlank @field:Size(max = 77) val valorChave: String,
+    @field:Size(max = 77) val valorChave: String,
     @field:NotBlank val tipoChave: TipoChave,
     @field:NotBlank val tipoConta: TipoConta,
     @Valid val conta: DadosClienteResposta,
@@ -30,7 +30,7 @@ data class NovoPix(
     fun paraEntidadeChave(): Chave {
         return Chave(
             clienteId = clienteId,
-            valor = if(tipoChave == TipoChave.CHAVE_ALEATORIA) UUID.randomUUID().toString() else valorChave,
+            valor = if(tipoChave == TipoChave.RANDOM) UUID.randomUUID().toString() else valorChave,
             tipoChave = tipoChave,
             tipoConta = tipoConta,
             conta = conta.paraConta()

@@ -8,10 +8,10 @@ option objc_class_prefix = "HLW";
 package br.com.erivelton.pix;
 
 service RemovePixGrpcService{
-  rpc remova(DadosPixRequisicao) returns (PixRemovidoResposta){}
+  rpc remova(PixRemovidoRequisicao) returns (PixRemovidoResposta){}
 }
 
-message DadosPixRequisicao {
+message PixRemovidoRequisicao {
   int64 pixId = 1;
   string clienteId = 2;
 }

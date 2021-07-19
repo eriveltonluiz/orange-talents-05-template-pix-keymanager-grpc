@@ -15,6 +15,4 @@ class Conta(
 
     @Column(name = "cpf_titular")
     val cpfTitular: String,
-){
-
-}
+)

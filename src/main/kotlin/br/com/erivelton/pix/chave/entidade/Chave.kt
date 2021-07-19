@@ -3,10 +3,8 @@ package br.com.erivelton.pix.chave.entidade
 import br.com.erivelton.pix.chave.enums.TipoChave
 import br.com.erivelton.pix.chave.enums.TipoConta
 import br.com.erivelton.pix.shared.apiexterna.dto.enums.TypePerson
-import br.com.erivelton.pix.shared.apiexterna.dto.resposta.ChavePixCriadaResposta
+import br.com.erivelton.pix.shared.apiexterna.dto.resposta.DetalhesChavePixResposta
 import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-import java.util.*
 import javax.persistence.*
 
 @Entity
@@ -15,7 +13,7 @@ class Chave(
     @Column(name = "cliente_id")
     val clienteId: String,
 
-    val valor: String,
+    var valor: String,
 
     @Enumerated(EnumType.STRING)
     @Column(name = "tipo_chave")
@@ -42,13 +40,18 @@ class Chave(
         return clienteId.toString()
     }
 
-    fun atualizaComDadosDoBancoCentral(chavePixCriadaResposta: ChavePixCriadaResposta){
+    fun atualizaComDadosDoBancoCentral(chavePixCriadaResposta: DetalhesChavePixResposta){
 //        criadoEm = LocalDateTime.parse(chavePixCriadaResposta.createdAt)
         criadoEm = chavePixCriadaResposta.createdAt
         tipoCliente = chavePixCriadaResposta.tipoCliente()
+        valor = chavePixCriadaResposta.key
     }
 
     fun ispbItau(): String{
         return conta.ispb
+    }
+
+    fun instituicaoDoCliente(): String{
+        return conta.instituicao
     }
 }

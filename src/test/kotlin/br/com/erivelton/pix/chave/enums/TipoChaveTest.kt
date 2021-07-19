@@ -106,14 +106,14 @@ internal class TipoChaveTest{
 
         @Test
         internal fun `deve invalidar quando o valor da chave ter sido inserido`() {
-            with(TipoChave.CHAVE_ALEATORIA) {
+            with(TipoChave.RANDOM) {
                 assertFalse(validaChave("eriveltonemail.com"))
             }
         }
 
         @Test
         internal fun `deve validar quando o valor da chave não for inserido`() {
-            with(TipoChave.CHAVE_ALEATORIA) {
+            with(TipoChave.RANDOM) {
                 assertTrue(validaChave(""))
                 assertTrue(validaChave(null))
             }

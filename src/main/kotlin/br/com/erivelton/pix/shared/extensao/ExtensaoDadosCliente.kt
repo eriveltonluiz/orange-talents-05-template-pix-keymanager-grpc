@@ -1,11 +1,13 @@
-package br.com.erivelton.pix.shared.apiexterna.dto.resposta
+package br.com.erivelton.pix.shared.extensao
 
-import br.com.erivelton.pix.addchave.PixRequest
+import br.com.erivelton.pix.PixRequest
 import br.com.erivelton.pix.chave.dto.requisicao.NovoPix
 import br.com.erivelton.pix.chave.enums.TipoChave
 import br.com.erivelton.pix.chave.enums.TipoConta
+import br.com.erivelton.pix.shared.apiexterna.dto.resposta.DadosClienteResposta
+import javax.validation.Valid
 
-fun PixRequest.toModel(contaCliente: DadosClienteResposta): NovoPix {
+fun PixRequest.toModel(@Valid contaCliente: DadosClienteResposta): NovoPix {
     return NovoPix(
         clienteId,
         valorChave,

@@ -1,8 +1,8 @@
 package br.com.erivelton.pix.chave.servidor
 
-import br.com.erivelton.pix.addchave.PixGrpcServiceGrpc
-import br.com.erivelton.pix.addchave.PixRequest
-import br.com.erivelton.pix.addchave.TipoChave
+import br.com.erivelton.pix.PixGrpcServiceGrpc
+import br.com.erivelton.pix.PixRequest
+import br.com.erivelton.pix.TipoChave
 import br.com.erivelton.pix.chave.entidade.Chave
 import br.com.erivelton.pix.chave.entidade.Conta
 import br.com.erivelton.pix.chave.enums.TipoConta
@@ -37,8 +37,8 @@ import javax.inject.Singleton
 
 @MicronautTest(transactional = false)
 internal class RegistraPixServerTest(
-    val repositorio: ChaveRepositorio,
-    val grpcClient: PixGrpcServiceGrpc.PixGrpcServiceBlockingStub
+    @Inject val repositorio: ChaveRepositorio,
+    @Inject val grpcClient: PixGrpcServiceGrpc.PixGrpcServiceBlockingStub
 ) {
 
     @Inject
@@ -51,7 +51,7 @@ internal class RegistraPixServerTest(
 
     lateinit var dadosChavePixRequisicao: DadosChavePixRequisicao
 
-    lateinit var dadosChavePixResposta: ChavePixCriadaResposta
+    lateinit var dadosChavePixResposta: DetalhesChavePixResposta
 
     lateinit var clienteIdPadrao: String
 
@@ -77,7 +77,7 @@ internal class RegistraPixServerTest(
             owner = ClienteRequisicao(TypePerson.NATURAL_PERSON, "Yuri Matheus", "86135457004")
         )
 
-        dadosChavePixResposta = ChavePixCriadaResposta(
+        dadosChavePixResposta = DetalhesChavePixResposta(
             key = "+823713681230",
             keyType = br.com.erivelton.pix.chave.enums.TipoChave.PHONE,
             bankAccount = ContaBancariaResposta("60701190", "0001", "123455", AccountType.CACC),
@@ -105,7 +105,7 @@ internal class RegistraPixServerTest(
                 .setClienteId("5260263c-a3c1-4727-ae32-3bdb2538841b")
                 .setValorChave("+823713681230")
                 .setTipoChave(TipoChave.PHONE)
-                .setTipoConta(br.com.erivelton.pix.addchave.TipoConta.CONTA_CORRENTE)
+                .setTipoConta(br.com.erivelton.pix.TipoConta.CONTA_CORRENTE)
                 .build()
         )
 
@@ -132,7 +132,7 @@ internal class RegistraPixServerTest(
                     .setClienteId(clienteIdErrado)
                     .setValorChave("+823713681230")
                     .setTipoChave(TipoChave.PHONE)
-                    .setTipoConta(br.com.erivelton.pix.addchave.TipoConta.CONTA_CORRENTE)
+                    .setTipoConta(br.com.erivelton.pix.TipoConta.CONTA_CORRENTE)
                     .build()
             )
         }
@@ -166,7 +166,7 @@ internal class RegistraPixServerTest(
                     .setClienteId(clienteIdPadrao)
                     .setValorChave("+823713681230")
                     .setTipoChave(TipoChave.PHONE)
-                    .setTipoConta(br.com.erivelton.pix.addchave.TipoConta.CONTA_CORRENTE)
+                    .setTipoConta(br.com.erivelton.pix.TipoConta.CONTA_CORRENTE)
                     .build()
             )
         }
@@ -180,8 +180,11 @@ internal class RegistraPixServerTest(
 
     @Test
     internal fun `nao deve registrar chave pix se houver parametros invalidos`() {
+        Mockito.`when`(itauClient.consultaCliente(clienteIdPadrao, TipoConta.CONTA_CORRENTE.name))
+            .thenReturn(HttpResponse.ok(dadosClienteItau))
+
         val throwGerado = assertThrows<StatusRuntimeException> {
-            grpcClient.registrarPix(PixRequest.newBuilder().build())
+            grpcClient.registrarPix(PixRequest.newBuilder().setClienteId(clienteIdPadrao).setTipoConta(br.com.erivelton.pix.TipoConta.CONTA_CORRENTE).build())
         }
 
         with(throwGerado) {
@@ -208,7 +211,8 @@ internal class RegistraPixServerTest(
     @Factory
     class Clients {
 
-        @Singleton
+//        @Bean // toda vida que tem @Inject um novo objeto é criada
+        @Singleton   // so invoca 1x e compartilha a mesma instância
         fun blockingStub(@GrpcChannel(GrpcServerChannel.NAME) channel: ManagedChannel): PixGrpcServiceGrpc.PixGrpcServiceBlockingStub? {
             return PixGrpcServiceGrpc.newBlockingStub(channel)
         }

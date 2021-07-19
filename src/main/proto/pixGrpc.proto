@@ -1,14 +1,48 @@
 syntax = "proto3";
 
 option java_multiple_files = true;
-option java_package = "br.com.erivelton.pix.addchave";
+option java_package = "br.com.erivelton.pix";
 option java_outer_classname = "PixGrpc";
 option objc_class_prefix = "HLW";
 
 package br.com.erivelton.pix;
 
+import 'google/protobuf/timestamp.proto';
+
 service PixGrpcService {
   rpc registrarPix (PixRequest) returns (PixResponse) {}
+
+  rpc buscaPix (DadosPixRequisicao) returns (DadosPixResposta){}
+}
+
+message DadosPixRequisicao {
+  int64 pixId = 1;
+  string clienteId = 2;
+  string valorChave = 3;
+}
+
+message DadosPixResposta {
+  string pixId = 1;
+  string clienteId = 2;
+  TipoChave tipoChave = 3;
+  string valorChave = 4;
+  string nome = 5;
+  string cpf = 6;
+  DadosConta dadosConta = 7;
+  google.protobuf.Timestamp momento = 8;
+}
+
+message DadosConta {
+  string instituicao = 1;
+  string agencia = 2;
+  string numero = 3;
+  TipoContaBcb tipoContaBcb = 4;
+}
+
+enum TipoContaBcb{
+  DESCONHECIDA = 0;
+  CACC = 1;
+  SVGS = 2;
 }
 
 enum TipoChave{
@@ -16,7 +50,7 @@ enum TipoChave{
   CPF = 1;
   PHONE = 2;
   EMAIL = 3;
-  CHAVE_ALEATORIA = 4;
+  RANDOM = 4;
 }
 
 enum TipoConta{

@@ -11,4 +11,5 @@ interface ChaveRepositorio : JpaRepository<Chave, Long>{
     fun existsByValor(valor: String): Boolean
 
     fun findByIdAndClienteId(id: Long, clienteId: String): Optional<Chave>
+    fun findByValor(valor: String): Chave?
 }

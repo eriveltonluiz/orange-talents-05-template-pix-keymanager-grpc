@@ -1,7 +1,5 @@
 package br.com.erivelton.pix.chave.servidor
 
-import br.com.erivelton.pix.addchave.PixGrpcServiceGrpc
-import br.com.erivelton.pix.addchave.PixRequest
 import org.junit.jupiter.api.assertThrows
 import br.com.erivelton.pix.chave.dto.requisicao.ChaveASerRemovidaRequisicao
 import br.com.erivelton.pix.chave.entidade.Chave
@@ -9,15 +7,9 @@ import br.com.erivelton.pix.chave.entidade.Conta
 import br.com.erivelton.pix.chave.enums.TipoChave
 import br.com.erivelton.pix.chave.enums.TipoConta
 import br.com.erivelton.pix.chave.repositorio.ChaveRepositorio
-import br.com.erivelton.pix.removechave.DadosPixRequisicao
+import br.com.erivelton.pix.removechave.PixRemovidoRequisicao
 import br.com.erivelton.pix.removechave.RemovePixGrpcServiceGrpc
 import br.com.erivelton.pix.shared.apiexterna.ApiExternaBCB
-import br.com.erivelton.pix.shared.apiexterna.ApiExternaContasItau
-import br.com.erivelton.pix.shared.apiexterna.dto.enums.AccountType
-import br.com.erivelton.pix.shared.apiexterna.dto.enums.TypePerson
-import br.com.erivelton.pix.shared.apiexterna.dto.requisicao.ClienteRequisicao
-import br.com.erivelton.pix.shared.apiexterna.dto.requisicao.ContaBancariaRequisicao
-import br.com.erivelton.pix.shared.apiexterna.dto.requisicao.DadosChavePixRequisicao
 import br.com.erivelton.pix.shared.apiexterna.dto.requisicao.DeletaChavePixRequisicao
 import br.com.erivelton.pix.shared.apiexterna.dto.resposta.*
 import io.grpc.ManagedChannel
@@ -48,9 +40,6 @@ internal class RemovaChavePixServidorTest(
     @Inject
     lateinit var apiExternaBCB: ApiExternaBCB
 
-    @Inject
-    lateinit var itauClient: ApiExternaContasItau
-
     @BeforeEach
     fun setup(){
         repositorio.deleteAll()
@@ -79,7 +68,7 @@ internal class RemovaChavePixServidorTest(
         val chaveRemovida = ChaveASerRemovidaRequisicao("1", clienteIdPadrao)
 
         val resposta = grpcClient.remova(
-            DadosPixRequisicao.newBuilder()
+            PixRemovidoRequisicao.newBuilder()
                 .setPixId(chaveRemovida.id!!.toLong())
                 .setClienteId(chaveRemovida.clienteId)
                 .build()
@@ -161,7 +150,7 @@ internal class RemovaChavePixServidorTest(
     @Test
     internal fun `nao deve permitir a exclusao de uma chave pix caso os dados nao forem preenchidos`() {
         val throwGerado = assertThrows<StatusRuntimeException>{grpcClient.remova(
-            DadosPixRequisicao.newBuilder()
+            PixRemovidoRequisicao.newBuilder()
                 .build()
         )}
 
@@ -177,7 +166,7 @@ internal class RemovaChavePixServidorTest(
         val chaveRemovida = ChaveASerRemovidaRequisicao("1", clienteIdPadrao)
 
         val throwGerado = assertThrows<StatusRuntimeException>{ grpcClient.remova(
-            DadosPixRequisicao.newBuilder()
+            PixRemovidoRequisicao.newBuilder()
                 .setPixId(chaveRemovida.id!!.toLong())
                 .setClienteId(chaveRemovida.clienteId)
                 .build()
@@ -195,7 +184,7 @@ internal class RemovaChavePixServidorTest(
         val chaveRemovida = ChaveASerRemovidaRequisicao("1", clienteIdNovo)
 
         val throwGerado = assertThrows<StatusRuntimeException>{ grpcClient.remova(
-            DadosPixRequisicao.newBuilder()
+            PixRemovidoRequisicao.newBuilder()
                 .setPixId(chaveRemovida.id!!.toLong())
                 .setClienteId(chaveRemovida.clienteId)
                 .build()
