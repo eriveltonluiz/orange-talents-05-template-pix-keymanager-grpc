@@ -4,7 +4,9 @@ import br.com.erivelton.pix.chave.enums.TipoChave
 import br.com.erivelton.pix.chave.enums.TipoConta
 import br.com.erivelton.pix.shared.apiexterna.dto.enums.TypePerson
 import br.com.erivelton.pix.shared.apiexterna.dto.resposta.DetalhesChavePixResposta
+import java.time.Instant
 import java.time.LocalDateTime
+import java.time.ZoneOffset
 import javax.persistence.*
 
 @Entity
@@ -53,5 +55,13 @@ class Chave(
 
     fun instituicaoDoCliente(): String{
         return conta.instituicao
+    }
+
+    fun paraNano(): Int {
+        return criadoEm!!.toInstant(ZoneOffset.UTC).nano
+    }
+
+    fun paraSeconds(): Long {
+        return criadoEm!!.toInstant(ZoneOffset.UTC).epochSecond
     }
 }

@@ -11,8 +11,28 @@ import 'google/protobuf/timestamp.proto';
 
 service PixGrpcService {
   rpc registrarPix (PixRequest) returns (PixResponse) {}
+}
 
-  rpc buscaPix (DadosPixRequisicao) returns (DadosPixResposta){}
+service BuscaGrpcService {
+  rpc buscaPix (DadosPixRequisicao) returns (DadosPixResposta) {}
+
+  rpc buscaTodosPixCliente (InformacaoIdClienteRequisicao) returns (DadosPixGeralResposta) {}
+}
+
+message DadosPixGeralResposta {
+  message PixGeralResposta{
+    string pixId = 1;
+    string clienteId = 2;
+    TipoChave tipoChave = 3;
+    string valorChave = 4;
+    TipoConta tipoConta = 5;
+    google.protobuf.Timestamp momento = 6;
+  }
+  repeated PixGeralResposta pixGeralResposta = 1;
+}
+
+message InformacaoIdClienteRequisicao {
+  string clienteId = 1;
 }
 
 message DadosPixRequisicao {

@@ -12,4 +12,5 @@ interface ChaveRepositorio : JpaRepository<Chave, Long>{
 
     fun findByIdAndClienteId(id: Long, clienteId: String): Optional<Chave>
     fun findByValor(valor: String): Chave?
+    fun findAllByClienteId(clienteId: String): List<Chave>
 }

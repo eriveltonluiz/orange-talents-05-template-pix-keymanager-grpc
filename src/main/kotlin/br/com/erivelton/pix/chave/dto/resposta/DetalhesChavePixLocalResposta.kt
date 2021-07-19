@@ -21,8 +21,12 @@ class DetalhesChavePixLocalResposta(
     var pixId: String? = null
     var clienteId: String? = null
 
-    fun paraInstant(): Instant{
-        return momentoCriacao.toInstant(ZoneOffset.UTC)
+    fun paraNano(): Int{
+        return momentoCriacao.toInstant(ZoneOffset.UTC).nano
+    }
+
+    fun paraSeconds(): Long{
+        return momentoCriacao.toInstant(ZoneOffset.UTC).epochSecond
     }
 
     fun instituicao(): String? {

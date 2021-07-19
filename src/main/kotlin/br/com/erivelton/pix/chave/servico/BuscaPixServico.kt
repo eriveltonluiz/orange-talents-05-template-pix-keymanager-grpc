@@ -10,6 +10,7 @@ import io.micronaut.http.HttpStatus
 import io.micronaut.validation.Validated
 import javax.inject.Singleton
 import javax.validation.Valid
+import javax.validation.constraints.NotBlank
 
 @Validated
 @Singleton
@@ -46,6 +47,10 @@ class BuscaPixServico(
         detalhesChavePixLocalResposta.clienteId = clienteId
 
         return detalhesChavePixLocalResposta
+    }
+
+    fun buscaTodos(@NotBlank clienteId: String): List<Chave>{
+        return chaveRepositorio.findAllByClienteId(clienteId)
     }
 
 }
