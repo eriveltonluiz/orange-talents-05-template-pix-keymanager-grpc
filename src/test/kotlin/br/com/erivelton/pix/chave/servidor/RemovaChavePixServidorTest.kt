@@ -133,10 +133,10 @@ internal class RemovaChavePixServidorTest(
     }
 
     @Factory
-    class Clients{
+    class ClientsRemove{
 
         @Singleton
-        fun blockingStub(@GrpcChannel(GrpcServerChannel.NAME) channel: ManagedChannel) : RemovePixGrpcServiceGrpc.RemovePixGrpcServiceBlockingStub?{
+        fun blockingStubRemove(@GrpcChannel(GrpcServerChannel.NAME) channel: ManagedChannel) : RemovePixGrpcServiceGrpc.RemovePixGrpcServiceBlockingStub?{
             return RemovePixGrpcServiceGrpc.newBlockingStub(channel)
         }
     }

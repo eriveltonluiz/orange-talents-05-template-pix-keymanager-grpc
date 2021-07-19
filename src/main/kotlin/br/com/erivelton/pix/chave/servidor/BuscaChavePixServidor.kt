@@ -6,6 +6,7 @@ import br.com.erivelton.pix.chave.servico.BuscaPixServico
 import br.com.erivelton.pix.shared.handlers.ErrorAroundHandler
 import com.google.protobuf.Timestamp
 import io.grpc.stub.StreamObserver
+import java.lang.Exception
 import javax.inject.Singleton
 
 @Singleton
@@ -49,9 +50,18 @@ class BuscaChavePixServidor(
         responseObserver: StreamObserver<DadosPixGeralResposta>?
     ) {
         val buscaTodos = buscaPixServico.buscaTodos(request.clienteId)
+        buscaTodos.forEach {
+            println(it.id)
+            println(it.valor)
+            println(it.clienteId)
+            println("------")
+        }
 
-        responseObserver?.onNext(DadosPixGeralResposta.newBuilder()
-            .addAllPixGeralResposta(buscaTodos.map { chave ->
+        println(request.clienteId)
+
+        var map: List<DadosPixGeralResposta.PixGeralResposta>? = null
+            try {
+            map = buscaTodos.map { chave ->
                 DadosPixGeralResposta.PixGeralResposta.newBuilder()
                     .setClienteId(chave.clienteId)
                     .setPixId(chave.id.toString())
@@ -65,8 +75,16 @@ class BuscaChavePixServidor(
                             .build()
                     )
                     .build()
-            })
-            .build())
+            }
+        } catch (ex: Exception){
+            ex.printStackTrace()
+        }
+
+        val build = DadosPixGeralResposta.newBuilder()
+            .addAllPixGeralResposta(map)
+            .build()
+
+        responseObserver?.onNext(build)
         responseObserver?.onCompleted()
     }
 }

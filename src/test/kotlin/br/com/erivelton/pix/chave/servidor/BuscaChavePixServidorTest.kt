@@ -2,6 +2,7 @@ package br.com.erivelton.pix.chave.servidor
 
 import br.com.erivelton.pix.BuscaGrpcServiceGrpc
 import br.com.erivelton.pix.DadosPixRequisicao
+import br.com.erivelton.pix.InformacaoIdClienteRequisicao
 import br.com.erivelton.pix.chave.dto.resposta.DetalhesChavePixLocalResposta
 import br.com.erivelton.pix.chave.entidade.Chave
 import br.com.erivelton.pix.chave.entidade.Conta
@@ -29,6 +30,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.mockito.Mockito
 import java.time.LocalDateTime
+import java.util.*
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -102,13 +104,13 @@ internal class BuscaChavePixServidorTest(
         val resposta = grpcClient.buscaPix(
             DadosPixRequisicao.newBuilder()
                 .setClienteId(clienteIdTeste)
-                .setPixId(2)
+                .setPixId(5)
                 .build()
         )
 
         with(resposta){
             assertEquals(clienteIdTeste, clienteId)
-            assertEquals("2", pixId)
+            assertEquals("5", pixId)
             assertEquals("+823713681230", valorChave)
         }
     }
@@ -201,6 +203,72 @@ internal class BuscaChavePixServidorTest(
         }
     }
 
+    @Test
+    internal fun `deve listar todas as chaves pix`() {
+        val chaves: List<Chave> = listOf(Chave(
+                clienteIdTeste,
+            "+823713681230",
+                TipoChave.PHONE,
+                TipoConta.CONTA_CORRENTE,
+                Conta("ITAÚ UNIBANCO S.A.", "60701190", "0001", "123455", "Yuri Matheus", "86135457004")
+            ),
+            Chave(
+                clienteIdTeste,
+                "+191385681230",
+                TipoChave.PHONE,
+                TipoConta.CONTA_POUPANCA,
+                Conta("ITAÚ UNIBANCO S.A.", "60701190", "0001", "123455", "Yuri Matheus", "86135457004")
+            ),
+            Chave(
+                clienteIdTeste,
+                "86135457004",
+                TipoChave.CPF,
+                TipoConta.CONTA_CORRENTE,
+                Conta("ITAÚ UNIBANCO S.A.", "60701190", "0001", "123455", "Yuri Matheus", "86135457004")
+            )
+        )
+        chaves[0].criadoEm = LocalDateTime.now()
+        chaves[1].criadoEm = LocalDateTime.now()
+        chaves[2].criadoEm = LocalDateTime.now()
+        repositorio.saveAll(chaves)
+
+        val resposta = grpcClient.buscaTodosPixCliente(InformacaoIdClienteRequisicao.newBuilder()
+            .setClienteId(clienteIdTeste)
+            .build())
+
+        with(resposta){
+            assertNotNull(this)
+            assertEquals(clienteIdTeste, resposta.getPixGeralResposta(0).clienteId)
+            assertEquals(2L, resposta.getPixGeralResposta(0).pixId.toLong())
+            assertEquals(3, pixGeralRespostaList.size)
+        }
+    }
+
+    @Test
+    internal fun `deve retornar chave vazia caso cliente id não esteja cadastrado`(){
+        val resposta = grpcClient.buscaTodosPixCliente(InformacaoIdClienteRequisicao.newBuilder()
+            .setClienteId(clienteIdTeste + "a")
+            .build())
+
+        with(resposta){
+            assertEquals(pixGeralRespostaList.size,0)
+        }
+    }
+
+    @Test
+    internal fun `nao deve retornar a lista caso cliente id seja nulo ou vazio`() {
+        val throwGerado = assertThrows<StatusRuntimeException> {
+            grpcClient.buscaTodosPixCliente(InformacaoIdClienteRequisicao.newBuilder()
+                .build()
+            )
+        }
+
+        with(throwGerado){
+            assertEquals(Status.INVALID_ARGUMENT.code, status.code)
+            assertEquals("buscaTodos.clienteId: must not be blank", status.description)
+        }
+    }
+
     @MockBean(ApiExternaBCB::class)
     fun bcbClient(): ApiExternaBCB{
         return Mockito.mock(ApiExternaBCB::class.java)
@@ -210,7 +278,7 @@ internal class BuscaChavePixServidorTest(
     class Client{
 
         @Singleton
-        fun blockingStub(@GrpcChannel(GrpcServerChannel.NAME) channel: ManagedChannel): BuscaGrpcServiceGrpc.BuscaGrpcServiceBlockingStub{
+        fun blockingStubregistra(@GrpcChannel(GrpcServerChannel.NAME) channel: ManagedChannel): BuscaGrpcServiceGrpc.BuscaGrpcServiceBlockingStub{
             return BuscaGrpcServiceGrpc.newBlockingStub(channel)
         }
 
