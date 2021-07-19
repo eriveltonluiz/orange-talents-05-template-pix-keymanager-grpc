@@ -13,6 +13,31 @@ service PixGrpcService {
   rpc registrarPix (PixRequest) returns (PixResponse) {}
 }
 
+message PixRequest {
+  string clienteId = 1;
+  string valorChave = 2;
+  TipoChave tipoChave = 3;
+  TipoConta tipoConta = 4;
+}
+
+message PixResponse {
+  int64 PixID = 1;
+  string clienteId = 2;
+}
+
+service RemovePixGrpcService{
+  rpc remova(PixRemovidoRequisicao) returns (PixRemovidoResposta){}
+}
+
+message PixRemovidoRequisicao {
+  int64 pixId = 1;
+  string clienteId = 2;
+}
+
+message PixRemovidoResposta {
+  string mensagem = 1;
+}
+
 service BuscaGrpcService {
   rpc buscaPix (DadosPixRequisicao) returns (DadosPixResposta) {}
 
@@ -77,16 +102,4 @@ enum TipoConta{
   CONTA_DESCONHECIDA = 0;
   CONTA_POUPANCA = 1;
   CONTA_CORRENTE = 2;
-}
-
-message PixRequest {
-  string clienteId = 1;
-  string valorChave = 2;
-  TipoChave tipoChave = 3;
-  TipoConta tipoConta = 4;
-}
-
-message PixResponse {
-  int64 PixID = 1;
-  string clienteId = 2;
 }

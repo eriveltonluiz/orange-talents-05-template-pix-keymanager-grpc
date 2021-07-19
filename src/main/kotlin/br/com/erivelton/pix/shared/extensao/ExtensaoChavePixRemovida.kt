@@ -1,7 +1,7 @@
 package br.com.erivelton.pix.shared.extensao
 
 import br.com.erivelton.pix.chave.dto.requisicao.ChaveASerRemovidaRequisicao
-import br.com.erivelton.pix.removechave.PixRemovidoRequisicao
+import br.com.erivelton.pix.PixRemovidoRequisicao
 import java.util.*
 
 fun PixRemovidoRequisicao.paraChaveASerRemovida(): ChaveASerRemovidaRequisicao {

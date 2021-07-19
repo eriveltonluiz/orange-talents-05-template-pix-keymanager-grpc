@@ -7,14 +7,15 @@ import br.com.erivelton.pix.chave.entidade.Conta
 import br.com.erivelton.pix.chave.enums.TipoChave
 import br.com.erivelton.pix.chave.enums.TipoConta
 import br.com.erivelton.pix.chave.repositorio.ChaveRepositorio
-import br.com.erivelton.pix.removechave.PixRemovidoRequisicao
-import br.com.erivelton.pix.removechave.RemovePixGrpcServiceGrpc
+import br.com.erivelton.pix.PixRemovidoRequisicao
+import br.com.erivelton.pix.RemovePixGrpcServiceGrpc
 import br.com.erivelton.pix.shared.apiexterna.ApiExternaBCB
 import br.com.erivelton.pix.shared.apiexterna.dto.requisicao.DeletaChavePixRequisicao
 import br.com.erivelton.pix.shared.apiexterna.dto.resposta.*
 import io.grpc.ManagedChannel
 import io.grpc.Status
 import io.grpc.StatusRuntimeException
+import io.micronaut.context.annotation.Bean
 import io.micronaut.context.annotation.Factory
 import io.micronaut.grpc.annotation.GrpcChannel
 import io.micronaut.grpc.server.GrpcServerChannel
@@ -33,7 +34,6 @@ import javax.inject.Singleton
 internal class RemovaChavePixServidorTest(
     val repositorio: ChaveRepositorio,
     val grpcClient: RemovePixGrpcServiceGrpc.RemovePixGrpcServiceBlockingStub,
-//    val grpcClientSalvar: PixGrpcServiceGrpc.PixGrpcServiceBlockingStub
 ){
     lateinit var clienteIdPadrao: String
 
@@ -77,75 +77,6 @@ internal class RemovaChavePixServidorTest(
         assertEquals("Chave removida com sucesso", resposta.mensagem)
 
     }
-//    @Test
-//    internal fun `deve permitir a exclusao de uma chave pix tanto no BCB quanto local caso os dados sejam validos`() {
-//        Mockito.`when`(
-//            itauClient.consultaCliente(
-//                clienteId = clienteIdPadrao,
-//                tipo = TipoConta.CONTA_CORRENTE.name
-//            )
-//        ).thenReturn(HttpResponse.ok(
-//            DadosClienteResposta(
-//            tipo = TipoConta.CONTA_CORRENTE.name,
-//            instituicao = InstituicaoResposta(nome = "ITAÚ UNIBANCO S.A.", ispb = "60701190"),
-//            agencia = "0001",
-//            numero = "123455",
-//            titular = TitularResposta(id = "5260263c-a3c1-4727-ae32-3bdb2538841b", nome = "Yuri Matheus", cpf = "86135457004")
-//            )
-//        ))
-//
-//        Mockito.`when`(apiExternaBCB.registraPix(
-//            DadosChavePixRequisicao(
-//            key = "+823713681230",
-//            keyType = TipoChave.PHONE,
-//            bankAccount = ContaBancariaRequisicao("60701190", "0001", "123455", AccountType.CACC),
-//            owner = ClienteRequisicao(TypePerson.NATURAL_PERSON, "Yuri Matheus", "86135457004"))
-//        ))
-//            .thenReturn(HttpResponse.created(
-//                ChavePixCriadaResposta(
-//                key = "+823713681230",
-//                keyType = TipoChave.PHONE,
-//                bankAccount = ContaBancariaResposta("60701190", "0001", "123455", AccountType.CACC),
-//                owner = ClienteResposta(TypePerson.NATURAL_PERSON, "Yuri Matheus", "86135457004"),
-//                createdAt = LocalDateTime.now())
-//            ))
-//
-//        grpcClient.registrarPix(
-//            PixRequest.newBuilder()
-//                .setClienteId("5260263c-a3c1-4727-ae32-3bdb2538841b")
-//                .setValorChave("+823713681230")
-//                .setTipoChave(br.com.erivelton.pix.TipoChave.PHONE)
-//                .setTipoConta(br.com.erivelton.pix.TipoConta.CONTA_CORRENTE)
-//                .build()
-//        )
-//
-//        val chaveASerRemovida = Chave(
-//            clienteIdPadrao,
-//            "+823713681230",
-//            TipoChave.PHONE,
-//            TipoConta.CONTA_CORRENTE,
-//            Conta("ITAÚ UNIBANCO S.A.", "60701190", "0001", "123455", "Yuri Matheus", "86135457004")
-//        )
-//        repositorio.save(chaveASerRemovida)
-//
-//        Mockito.`when`(apiExternaBCB.removePix(DeletaChavePixRequisicao(chave = chaveASerRemovida), chaveASerRemovida.valor))
-//            .thenReturn(HttpResponse.ok(ChavePixDeletadaResposta(
-//                key = "+823713681230",
-//                participant = "60701190",
-//                deletedAt = LocalDateTime.now()))
-//            )
-//
-//        val chaveRemovida = ChaveASerRemovidaRequisicao("1", clienteIdPadrao)
-//
-//        val resposta = grpcClient.remova(
-//            DadosPixRequisicao.newBuilder()
-//                .setPixId(chaveRemovida.id!!.toLong())
-//                .setClienteId(chaveRemovida.clienteId)
-//                .build()
-//        )
-//
-//        assertEquals("Chave removida com sucesso", resposta.mensagem)
-//    }
 
     @Test
     internal fun `nao deve permitir a exclusao de uma chave pix caso os dados nao forem preenchidos`() {

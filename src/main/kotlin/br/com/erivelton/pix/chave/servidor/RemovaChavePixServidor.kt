@@ -1,10 +1,9 @@
 package br.com.erivelton.pix.chave.servidor
 
-import br.com.erivelton.pix.DadosPixRequisicao
 import br.com.erivelton.pix.chave.servico.RemovaPixServico
-import br.com.erivelton.pix.removechave.PixRemovidoRequisicao
-import br.com.erivelton.pix.removechave.PixRemovidoResposta
-import br.com.erivelton.pix.removechave.RemovePixGrpcServiceGrpc
+import br.com.erivelton.pix.PixRemovidoRequisicao
+import br.com.erivelton.pix.PixRemovidoResposta
+import br.com.erivelton.pix.RemovePixGrpcServiceGrpc
 import br.com.erivelton.pix.shared.extensao.paraChaveASerRemovida
 import br.com.erivelton.pix.shared.handlers.ErrorAroundHandler
 import io.grpc.stub.StreamObserver

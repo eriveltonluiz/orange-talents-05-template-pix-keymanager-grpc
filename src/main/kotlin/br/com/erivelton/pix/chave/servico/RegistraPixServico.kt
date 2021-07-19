@@ -7,6 +7,7 @@ import br.com.erivelton.pix.shared.apiexterna.ApiExternaBCB
 import br.com.erivelton.pix.shared.excecao.ChavePixDuplicadaException
 import io.micronaut.http.HttpStatus
 import io.micronaut.validation.Validated
+import javax.inject.Inject
 import javax.inject.Singleton
 import javax.transaction.Transactional
 import javax.validation.Valid
@@ -14,7 +15,7 @@ import javax.validation.Valid
 @Validated
 @Singleton
 @Transactional
-class RegistraPixServidor(
+class RegistraPixServico(
     val chaveRepositorio: ChaveRepositorio,
     val apiExternaBCB: ApiExternaBCB
 ) {

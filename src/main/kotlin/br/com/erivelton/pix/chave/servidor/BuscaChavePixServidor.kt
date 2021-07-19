@@ -3,16 +3,9 @@ package br.com.erivelton.pix.chave.servidor
 import br.com.erivelton.pix.*
 import br.com.erivelton.pix.chave.dto.requisicao.InformacoesChavePix
 import br.com.erivelton.pix.chave.servico.BuscaPixServico
-import br.com.erivelton.pix.shared.apiexterna.ApiExternaContasItau
-import br.com.erivelton.pix.shared.apiexterna.dto.resposta.DadosClienteResposta
-import br.com.erivelton.pix.chave.servico.RegistraPixServidor
-import br.com.erivelton.pix.shared.extensao.toModel
-import br.com.erivelton.pix.shared.excecao.ErroDeProcessamentoApiExternaException
 import br.com.erivelton.pix.shared.handlers.ErrorAroundHandler
 import com.google.protobuf.Timestamp
 import io.grpc.stub.StreamObserver
-import io.micronaut.http.HttpResponse
-import java.lang.Exception
 import javax.inject.Singleton
 
 @Singleton

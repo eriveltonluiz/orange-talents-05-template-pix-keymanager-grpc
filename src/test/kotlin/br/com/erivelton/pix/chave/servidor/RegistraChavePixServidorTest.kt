@@ -36,9 +36,9 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @MicronautTest(transactional = false)
-internal class RegistraPixServerTest(
-    @Inject val repositorio: ChaveRepositorio,
-    @Inject val grpcClient: PixGrpcServiceGrpc.PixGrpcServiceBlockingStub
+internal class RegistraChavePixServidorTest(
+    val repositorio: ChaveRepositorio,
+    val grpcClient: PixGrpcServiceGrpc.PixGrpcServiceBlockingStub
 ) {
 
     @Inject
@@ -189,7 +189,7 @@ internal class RegistraPixServerTest(
 
         with(throwGerado) {
             assertEquals(Status.INVALID_ARGUMENT.code, status.code)
-            assertEquals("Dados inválidos", status.description)
+            assertEquals("salvarPix.novoPix: Chave Pix inválida", status.description)
 //            MatcherAssert.assertThat(violationsFrom(this), containsInAnyOrder(
 //                Pair("clienteId", "must not be blank"),
 //                Pair("tipoConta", "must not be null"),

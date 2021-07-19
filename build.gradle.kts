@@ -41,8 +41,9 @@ dependencies {
     runtimeOnly("ch.qos.logback:logback-classic")
     runtimeOnly("mysql:mysql-connector-java")
     testImplementation("org.testcontainers:junit-jupiter")
-    testImplementation("org.testcontainers:mysql")
     testImplementation("org.testcontainers:testcontainers")
+//    testImplementation("org.testcontainers:junit-jupiter")
+//    testImplementation("org.testcontainers:mysql")
     implementation("io.micronaut:micronaut-validation")
     implementation("org.hibernate:hibernate-validator:6.1.6.Final")
 
@@ -52,10 +53,10 @@ dependencies {
 
     testAnnotationProcessor("io.micronaut:micronaut-inject-java")
     testImplementation("io.micronaut:micronaut-http-client")
-    testImplementation("org.junit.jupiter:junit-jupiter-api")
+//    testImplementation("org.junit.jupiter:junit-jupiter-api")
     testImplementation("org.mockito:mockito-core:3.8.0")
-    testImplementation("io.micronaut.test:micronaut-test-junit5:2.3.2")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.7.0")
+//    testImplementation("io.micronaut.test:micronaut-test-junit5:2.3.2")
+//    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.7.0")
     testImplementation("com.h2database:h2")
 
     implementation("io.micronaut.xml:micronaut-jackson-xml")

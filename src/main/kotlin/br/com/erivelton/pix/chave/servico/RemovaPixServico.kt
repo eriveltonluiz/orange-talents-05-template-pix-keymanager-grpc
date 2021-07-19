@@ -11,10 +11,12 @@ import io.micronaut.validation.Validated
 import java.util.*
 import javax.inject.Inject
 import javax.inject.Singleton
+import javax.transaction.Transactional
 import javax.validation.Valid
 
 @Validated
 @Singleton
+@Transactional
 class RemovaPixServico(
     val repositorio: ChaveRepositorio,
     val apiExternaBCB: ApiExternaBCB

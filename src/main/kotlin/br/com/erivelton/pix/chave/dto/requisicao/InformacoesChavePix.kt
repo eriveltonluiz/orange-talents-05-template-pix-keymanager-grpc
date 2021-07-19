@@ -10,7 +10,7 @@ import javax.validation.constraints.Size
 data class InformacoesChavePix(
     val clienteId: String,
     val pixId: Long,
-    @field:Size(max = 77, min = 0)val chavePix: String
+    @field:Size(max = 77, min = 0) var chavePix: String
 ){
     fun verificarClienteId(): Boolean{
         return clienteId.isNullOrBlank()

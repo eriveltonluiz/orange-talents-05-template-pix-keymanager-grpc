@@ -23,7 +23,6 @@ class BuscaPixServico(
         var chaveEncontrada: Chave? = null
         var clienteId: String? = ""
         var pixId: String? = ""
-        var chave = ""
 
         if(!informacoesPix.verificarClienteId()){
             chaveEncontrada = chaveRepositorio.findByIdAndClienteId(informacoesPix.pixId, informacoesPix.clienteId).orElseThrow {
@@ -31,12 +30,12 @@ class BuscaPixServico(
             }
             pixId = chaveEncontrada.id.toString()
             clienteId = chaveEncontrada.clienteId
-            chave = chaveEncontrada.valor
+            informacoesPix.chavePix = chaveEncontrada.valor
         } else{
             chaveEncontrada = chaveRepositorio.findByValor(informacoesPix.chavePix)
         }
 
-        val respostaBCB = apiExternaBCB.buscaPix(chave)
+        val respostaBCB = apiExternaBCB.buscaPix(informacoesPix.chavePix)
         if(respostaBCB.status == HttpStatus.NOT_FOUND){
             throw ChavePixNaoEncontradaException("Chave pix não foi encontrada no BCB")
         }
