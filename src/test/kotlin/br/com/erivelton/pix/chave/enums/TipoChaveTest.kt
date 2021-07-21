@@ -11,7 +11,7 @@ internal class TipoChaveTest{
     inner class EMAIL {
 
         @Test
-        internal fun `deve invalidar quando não for inserido o valor da chave de EMAIL`() {
+        internal fun `deve invalidar quando nao for inserido o valor da chave de EMAIL`() {
             with(TipoChave.EMAIL) {
                 assertFalse(validaChave(""))
                 assertFalse(validaChave(null))
@@ -38,7 +38,7 @@ internal class TipoChaveTest{
     inner class CPF{
 
         @Test
-        internal fun `deve invalidar quando não for inserido o valor da chave CPF`() {
+        internal fun `deve invalidar quando nao for inserido o valor da chave CPF`() {
             with(TipoChave.CPF) {
                 assertFalse(validaChave(""))
                 assertFalse(validaChave(null))
@@ -46,7 +46,7 @@ internal class TipoChaveTest{
         }
 
         @Test
-        internal fun `deve invalidar quando o valor da chave CPF não for condizente`() {
+        internal fun `deve invalidar quando o valor da chave CPF nao for condizente`() {
             with(TipoChave.CPF) {
                 assertFalse(validaChave("2132123"))
             }
@@ -102,7 +102,8 @@ internal class TipoChaveTest{
 
     }
 
-    inner class CHAVE_ALEATORIA{
+    @Nested
+    inner class RANDOM{
 
         @Test
         internal fun `deve invalidar quando o valor da chave ter sido inserido`() {

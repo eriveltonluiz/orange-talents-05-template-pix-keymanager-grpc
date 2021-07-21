@@ -21,15 +21,13 @@ class RegistraChavePixServidor(
 ) : PixGrpcServiceGrpc.PixGrpcServiceImplBase() {
 
     override fun registrarPix(request: PixRequest, responseObserver: StreamObserver<PixResponse>?) {
-        var consultaCliente: HttpResponse<DadosClienteResposta>? = null
-
-        try {
-            consultaCliente = apiExternaContasItau.consultaCliente(request.clienteId, request.tipoConta.name)
-        } catch (ex: Exception) {
-            ex.printStackTrace()
-            throw ErroDeProcessamentoApiExternaException("Erro ao trazer os dados cliente do itaú!!")
+        val consultaCliente = apiExternaContasItau.consultaCliente(request.clienteId, request.tipoConta.name)
+        val dadosClienteResposta = when (consultaCliente.status.code) {
+            200 -> consultaCliente.body()
+            else -> throw ErroDeProcessamentoApiExternaException("Erro ao trazer os dados cliente do itaú!!")
         }
-        val novoPix = request.toModel(consultaCliente.body())
+
+        val novoPix = request.toModel(dadosClienteResposta)
         val chave = registraPixService.salvarPix(novoPix)
 
         val resposta = PixResponse.newBuilder()

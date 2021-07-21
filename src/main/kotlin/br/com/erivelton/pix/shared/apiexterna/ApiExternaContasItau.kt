@@ -8,7 +8,6 @@ import io.micronaut.http.annotation.QueryValue
 import io.micronaut.http.client.annotation.Client
 import io.micronaut.validation.Validated
 
-@Validated
 @Client(value = "\${api.itau}/clientes/")
 interface ApiExternaContasItau {
 

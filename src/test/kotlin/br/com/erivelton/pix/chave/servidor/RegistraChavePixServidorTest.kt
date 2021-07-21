@@ -137,8 +137,6 @@ internal class RegistraChavePixServidorTest(
             )
         }
 
-        throwGerado.printStackTrace()
-
         with(throwGerado) {
             assertEquals(Status.FAILED_PRECONDITION.code, status.code)
             assertEquals("Erro ao trazer os dados cliente do itaú!!", status.description)

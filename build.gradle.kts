@@ -18,7 +18,7 @@ repositories {
 }
 
 micronaut {
-    runtime("netty")
+//    runtime("netty")
     testRuntime("junit5")
     processing {
         incremental(true)
@@ -32,7 +32,6 @@ dependencies {
     implementation("io.micronaut:micronaut-http-client")
     implementation("io.micronaut.data:micronaut-data-hibernate-jpa")
     implementation("io.micronaut.grpc:micronaut-grpc-runtime")
-//    implementation("io.micronaut.grpc:micronaut-grpc-client-runtime")
     implementation("io.micronaut.kotlin:micronaut-kotlin-runtime")
     implementation("io.micronaut.sql:micronaut-jdbc-hikari")
     implementation("javax.annotation:javax.annotation-api")
@@ -42,21 +41,12 @@ dependencies {
     runtimeOnly("mysql:mysql-connector-java")
     testImplementation("org.testcontainers:junit-jupiter")
     testImplementation("org.testcontainers:testcontainers")
-//    testImplementation("org.testcontainers:junit-jupiter")
-//    testImplementation("org.testcontainers:mysql")
     implementation("io.micronaut:micronaut-validation")
     implementation("org.hibernate:hibernate-validator:6.1.6.Final")
 
-    runtimeOnly("com.fasterxml.jackson.module:jackson-module-kotlin")
-
-    testImplementation("io.micronaut:micronaut-http-client")
-
     testAnnotationProcessor("io.micronaut:micronaut-inject-java")
     testImplementation("io.micronaut:micronaut-http-client")
-//    testImplementation("org.junit.jupiter:junit-jupiter-api")
     testImplementation("org.mockito:mockito-core:3.8.0")
-//    testImplementation("io.micronaut.test:micronaut-test-junit5:2.3.2")
-//    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.7.0")
     testImplementation("com.h2database:h2")
 
     implementation("io.micronaut.xml:micronaut-jackson-xml")
