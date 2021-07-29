@@ -15,6 +15,8 @@ class RemovaChavePixServidor(val removaPixServico: RemovaPixServico) :
     RemovePixGrpcServiceGrpc.RemovePixGrpcServiceImplBase() {
 
     override fun remova(request: PixRemovidoRequisicao, responseObserver: StreamObserver<PixRemovidoResposta>?) {
+        println(request.clienteId)
+        println(request.pixId)
         val chaveASerRemovidaRequisicao = request.paraChaveASerRemovida()
         removaPixServico.remova(chaveASerRemovidaRequisicao)
 

@@ -33,12 +33,14 @@ class BuscaChavePixServidor(
                 .setValorChave(detalhesChavePix.valorChave)
                 .setNome(detalhesChavePix.nomeTitular)
                 .setCpf(detalhesChavePix.cpfTitular)
-                .setDadosConta(DadosConta.newBuilder()
-                    .setInstituicao(detalhesChavePix.instituicao())
-                    .setAgencia(detalhesChavePix.agencia())
-                    .setNumero(detalhesChavePix.numero())
-                    .setTipoContaBcb(TipoContaBcb.valueOf(detalhesChavePix.tipoConta().name))
-                .build())
+                .setDadosConta(
+                    DadosConta.newBuilder()
+                        .setInstituicao(detalhesChavePix.instituicao())
+                        .setAgencia(detalhesChavePix.agencia())
+                        .setNumero(detalhesChavePix.numero())
+                        .setTipoContaBcb(TipoContaBcb.valueOf(detalhesChavePix.tipoConta().name))
+                        .build()
+                )
                 .setMomento(momentoCriacao)
                 .build()
         )
@@ -50,34 +52,21 @@ class BuscaChavePixServidor(
         responseObserver: StreamObserver<DadosPixGeralResposta>?
     ) {
         val buscaTodos = buscaPixServico.buscaTodos(request.clienteId)
-        buscaTodos.forEach {
-            println(it.id)
-            println(it.valor)
-            println(it.clienteId)
-            println("------")
-        }
 
-        println(request.clienteId)
-
-        var map: List<DadosPixGeralResposta.PixGeralResposta>? = null
-            try {
-            map = buscaTodos.map { chave ->
-                DadosPixGeralResposta.PixGeralResposta.newBuilder()
-                    .setClienteId(chave.clienteId)
-                    .setPixId(chave.id.toString())
-                    .setTipoChave(TipoChave.valueOf(chave.tipoChave.name))
-                    .setValorChave(chave.valor)
-                    .setTipoConta(TipoConta.valueOf(chave.tipoConta.name))
-                    .setMomento(
-                        Timestamp.newBuilder()
-                            .setNanos(chave.paraNano())
-                            .setSeconds(chave.paraSeconds())
-                            .build()
-                    )
-                    .build()
-            }
-        } catch (ex: Exception){
-            ex.printStackTrace()
+        val map = buscaTodos.map { chave ->
+            DadosPixGeralResposta.PixGeralResposta.newBuilder()
+                .setClienteId(chave.clienteId)
+                .setPixId(chave.id.toString())
+                .setTipoChave(TipoChave.valueOf(chave.tipoChave.name))
+                .setValorChave(chave.valor)
+                .setTipoConta(TipoConta.valueOf(chave.tipoConta.name))
+                .setMomento(
+                    Timestamp.newBuilder()
+                        .setNanos(chave.paraNano())
+                        .setSeconds(chave.paraSeconds())
+                        .build()
+                )
+                .build()
         }
 
         val build = DadosPixGeralResposta.newBuilder()
@@ -89,7 +78,7 @@ class BuscaChavePixServidor(
     }
 }
 
-private fun DadosPixRequisicao.paraDadosPix() : InformacoesChavePix {
+private fun DadosPixRequisicao.paraDadosPix(): InformacoesChavePix {
     return InformacoesChavePix(
         clienteId = clienteId,
         pixId = pixId.toLong(),
