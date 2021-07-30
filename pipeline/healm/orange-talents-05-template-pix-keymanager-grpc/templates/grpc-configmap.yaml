@@ -8,3 +8,5 @@ spec:
     DB_USERNAME: {{ Values.application.DB_USERNAME }}
     ENDPOINT_GERAL_ITAU: {{ Values.application.ENDPOINT_GERAL_ITAU }}
     ENDPOINT_GERAL_BCB: {{ Values.application.ENDPOINT_GERAL_BCB }}
+    DB_DRIVER: {{ Values.application.DB_DRIVER }}
+    DB_DIALECT: {{ Values.application.DB_DIALECT }}
